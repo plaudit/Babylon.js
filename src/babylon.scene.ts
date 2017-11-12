@@ -1848,7 +1848,7 @@
             for (index = 0; index < this.meshes.length; index++) {
                 var mesh = this.meshes[index];
 
-                if (!mesh.isEnabled()) {
+                if (mesh.isEnabled() === false) {
                     continue;
                 }
 
@@ -1856,13 +1856,13 @@
                     continue;
                 }
 
-                if (!mesh.isReady()) {
+                if (mesh.isReady() === false) {
                     return false;
                 }
 
                 var mat = mesh.material;
-                if (mat) {
-                    if (!mat.isReady(mesh)) {
+                if (mat !== null && mat !== undefined) {
+                    if (mat.isReady(mesh) === false) {
                         return false;
                     }
                 }
@@ -2915,19 +2915,16 @@
                 meshes = this.meshes;
             }
 
+            var mesh, meshLOD;
             for (var meshIndex = 0; meshIndex < len; meshIndex++) {
-                var mesh = meshes[meshIndex];
+                mesh = meshes[meshIndex];
 
-                if (mesh.isBlocked === true) {
+                if (mesh.isBlocked === true || mesh.isReady() === false || mesh.isEnabled() === false) {
                     continue;
                 }
 
                 if (BABYLON.PerfCounter.Enabled === true) {
                     this._totalVertices.addCount(mesh.getTotalVertices(), false);
-                }
-
-                if (mesh.isReady() === false || mesh.isEnabled() === false) {
-                    continue;
                 }
 
                 mesh.computeWorldMatrix();
@@ -2938,7 +2935,7 @@
                 }
 
                 // Switch to current LOD
-                var meshLOD = mesh.getLOD(this.activeCamera);
+                meshLOD = mesh.getLOD(this.activeCamera);
 
                 if (!meshLOD) {
                     continue;
@@ -2946,7 +2943,10 @@
 
                 mesh._preActivate();
 
-                if (mesh.alwaysSelectAsActiveMesh || mesh.isVisible && mesh.visibility > 0 && ((mesh.layerMask & this.activeCamera.layerMask) !== 0) && mesh.isInFrustum(this._frustumPlanes)) {
+                if (
+                    mesh.alwaysSelectAsActiveMesh
+                    || mesh.isVisible && mesh.visibility > 0 && ((mesh.layerMask & this.activeCamera.layerMask) !== 0) && mesh.isInFrustum(this._frustumPlanes)
+                ) {
                     this._activeMeshes.push(mesh);
                     this.activeCamera._activeMeshes.push(mesh);
                         
