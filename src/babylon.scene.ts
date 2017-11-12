@@ -3,6 +3,11 @@
         dispose(): void;
     }
 
+    export interface IActiveMeshCandidateProvider {
+        getMeshes(scene: Scene): AbstractMesh[];
+        readonly hasCheckIsEnabled: boolean; // Indicates if the meshes have been checked to make sure they are isEnabled().
+    }
+
     class ClickInfo {
         private _singleClick = false;
         private _doubleClick = false;
@@ -2878,6 +2883,14 @@
             return this;
         }
 
+        private _activeMeshCandidateProvider: IActiveMeshCandidateProvider;
+        public setActiveMeshCandidateProvider(provider: IActiveMeshCandidateProvider): void {
+            this._activeMeshCandidateProvider = provider;
+        }
+        public getActiveMeshCandidateProvider(): IActiveMeshCandidateProvider {
+            return this._activeMeshCandidateProvider;
+        }
+
         private _evaluateActiveMeshes(): void {
             if (this._activeMeshesFrozen && this._activeMeshes.length) {
                 return;
@@ -2903,8 +2916,18 @@
             // Meshes
             var meshes: AbstractMesh[];
             var len: number;
+            var checkIsEnabled = true;
 
-            if (this._selectionOctree !== undefined) {
+
+            if (this._activeMeshCandidateProvider !== undefined) {
+                meshes = this._activeMeshCandidateProvider.getMeshes(this);
+                checkIsEnabled = this._activeMeshCandidateProvider.hasCheckIsEnabled === false;
+                if (meshes !== undefined) {
+                    len = meshes.length;
+                } else {
+                    len = 0;
+                }
+            } else if (this._selectionOctree !== undefined) {
                 // Octree
                 var selection = this._selectionOctree.select(this._frustumPlanes);
                 meshes = selection.data;
@@ -2927,7 +2950,10 @@
                     this._totalVertices.addCount(mesh.getTotalVertices(), false);
                 }
 
-                if (mesh.isReady() === false || mesh.isEnabled() === false) {
+                if (
+                    mesh.isReady() === false
+                    || (checkIsEnabled === true && mesh.isEnabled() === false)
+                ) {
                     continue;
                 }
 
