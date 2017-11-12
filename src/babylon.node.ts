@@ -239,15 +239,20 @@
         /**
          * Is this node enabled. 
          * If the node has a parent and is enabled, the parent will be inspected as well.
+         * @param {boolean} [checkParent=true] - If the method should check the parent if this node is not set. The default is to check the parent.
          * @return {boolean} whether this node (and its parent) is enabled.
          * @see setEnabled
          */
-        public isEnabled(): boolean {
-            if (!this._isEnabled) {
+        public isEnabled(checkParent: boolean = true): boolean {
+            if (checkParent === false) {
+                return this._isEnabled;
+            }
+            
+            if (this._isEnabled === false) {
                 return false;
             }
 
-            if (this.parent) {
+            if (this.parent !== undefined && this.parent !== null) {
                 return this.parent.isEnabled();
             }
 
