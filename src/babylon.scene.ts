@@ -2904,15 +2904,16 @@
             var meshes: AbstractMesh[];
             var len: number;
 
-            if (this._selectionOctree !== undefined) { // Octree
+            if (this._selectionOctree !== undefined) {
+                // Octree
                 var selection = this._selectionOctree.select(this._frustumPlanes);
                 meshes = selection.data;
                 len = selection.length;
-            } else { // Full scene traversal
+            } else {
+                // Full scene traversal
                 len = this.meshes.length;
                 meshes = this.meshes;
             }
-            console.log("UPDATED_4 Number of meshes being considered for _evaluateActiveMeshes", len, "this._selectionOctree", this._selectionOctree); // TODO delete.
 
             for (var meshIndex = 0; meshIndex < len; meshIndex++) {
                 var mesh = meshes[meshIndex];
