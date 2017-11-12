@@ -2827,7 +2827,7 @@
         }
 
         private _evaluateSubMesh(subMesh: SubMesh, mesh: AbstractMesh): void {
-            if (mesh.alwaysSelectAsActiveMesh === true || mesh.subMeshes.length === 1 || subMesh.isInFrustum(this._frustumPlanes)) {
+            // if (mesh.alwaysSelectAsActiveMesh === true || mesh.subMeshes.length === 1 || subMesh.isInFrustum(this._frustumPlanes)) {
                 
                 if (mesh.showSubMeshesBoundingBox === true) {
                     const boundingInfo = subMesh.getBoundingInfo();
@@ -2851,7 +2851,7 @@
                     this._activeIndices.addCount(subMesh.indexCount, false);
                     this._renderingManager.dispatch(subMesh, mesh, material);
                 }
-            }
+            // }
         }
 
         public _isInIntermediateRendering(): boolean {
