@@ -267,7 +267,7 @@
         }
 
         public getTotalVertices(): number {
-            if (!this.isReady()) {
+            if (this.isReady() === false) {
                 return 0;
             }
 
@@ -1061,8 +1061,9 @@
             mesh.computeWorldMatrix(true);
 
             // Octree
-            if (scene['_selectionOctree']) {
-                scene['_selectionOctree'].addMesh(<AbstractMesh>mesh);
+            const sceneOctree = scene.selectionOctree;
+            if (sceneOctree !== undefined) {
+                sceneOctree.addMesh(<AbstractMesh>mesh);
             }
         }
 

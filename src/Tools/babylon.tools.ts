@@ -1395,7 +1395,7 @@
          * @param fetchResult true when it's the last time in the frame you add to the counter and you wish to update the statistics properties (min/max/average), false if you only want to update statistics.
          */
         public addCount(newCount: number, fetchResult: boolean) {
-            if (!PerfCounter.Enabled) {
+            if (PerfCounter.Enabled === false) {
                 return;
             }
             this._current += newCount;

@@ -316,11 +316,15 @@
          * Inserts the submesh in its correct queue depending on its material.
          * @param subMesh The submesh to dispatch
          */
-        public dispatch(subMesh: SubMesh): void {
-            var material = subMesh.getMaterial();
-            var mesh = subMesh.getMesh();
+        public dispatch(subMesh: SubMesh, mesh?: AbstractMesh, material?: Nullable<Material>): void {
+            if (mesh === undefined) {
+                mesh = subMesh.getMesh();
+            }
+            if (material === undefined) {
+                material = subMesh.getMaterial();
+            }
 
-            if (!material) {
+            if (material === null && material == undefined) {
                 return;
             }
 

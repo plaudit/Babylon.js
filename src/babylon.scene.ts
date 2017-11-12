@@ -2827,20 +2827,19 @@
         }
 
         private _evaluateSubMesh(subMesh: SubMesh, mesh: AbstractMesh): void {
-            if (mesh.alwaysSelectAsActiveMesh || mesh.subMeshes.length === 1 || subMesh.isInFrustum(this._frustumPlanes)) {
-                var material = subMesh.getMaterial();
-
-                if (mesh.showSubMeshesBoundingBox) {
-                    let boundingInfo = subMesh.getBoundingInfo();
-
-                    if (boundingInfo) {
+            if (mesh.alwaysSelectAsActiveMesh === true || mesh.subMeshes.length === 1 || subMesh.isInFrustum(this._frustumPlanes)) {
+                
+                if (mesh.showSubMeshesBoundingBox === true) {
+                    const boundingInfo = subMesh.getBoundingInfo();
+                    if (boundingInfo !== null && boundingInfo !== undefined) {
                         this.getBoundingBoxRenderer().renderList.push(boundingInfo.boundingBox);
                     }
                 }
 
-                if (material) {
+                const material = subMesh.getMaterial();
+                if (material !== null && material !== undefined) {
                     // Render targets
-                    if (material.getRenderTargetTextures) {
+                    if (material.getRenderTargetTextures !== undefined) {
                         if (this._processedMaterials.indexOf(material) === -1) {
                             this._processedMaterials.push(material);
 
@@ -2850,7 +2849,7 @@
 
                     // Dispatch
                     this._activeIndices.addCount(subMesh.indexCount, false);
-                    this._renderingManager.dispatch(subMesh);
+                    this._renderingManager.dispatch(subMesh, mesh, material);
                 }
             }
         }
@@ -2904,7 +2903,7 @@
             var meshes: AbstractMesh[];
             var len: number;
 
-            if (this._selectionOctree) { // Octree
+            if (this._selectionOctree !== undefined) { // Octree
                 var selection = this._selectionOctree.select(this._frustumPlanes);
                 meshes = selection.data;
                 len = selection.length;
@@ -2912,17 +2911,20 @@
                 len = this.meshes.length;
                 meshes = this.meshes;
             }
+            console.log("UPDATED_4 Number of meshes being considered for _evaluateActiveMeshes", len, "this._selectionOctree", this._selectionOctree); // TODO delete.
 
             for (var meshIndex = 0; meshIndex < len; meshIndex++) {
                 var mesh = meshes[meshIndex];
 
-                if (mesh.isBlocked) {
+                if (mesh.isBlocked === true) {
                     continue;
                 }
 
-                this._totalVertices.addCount(mesh.getTotalVertices(), false);
+                if (BABYLON.PerfCounter.Enabled === true) {
+                    this._totalVertices.addCount(mesh.getTotalVertices(), false);
+                }
 
-                if (!mesh.isReady() || !mesh.isEnabled()) {
+                if (mesh.isReady() === false || mesh.isEnabled() === false) {
                     continue;
                 }
 
@@ -2979,7 +2981,7 @@
         }
 
         private _activeMesh(sourceMesh: AbstractMesh, mesh: AbstractMesh): void {
-            if (mesh.skeleton && this.skeletonsEnabled) {
+            if (this.skeletonsEnabled === true && mesh.skeleton) {
                 if (this._activeSkeletons.pushNoDuplicate(mesh.skeleton)) {
                     mesh.skeleton.prepare();
                 }
@@ -2989,7 +2991,7 @@
                 }
             }
 
-            if (sourceMesh.showBoundingBox || this.forceShowBoundingBoxes) {
+            if (sourceMesh.showBoundingBox === true || this.forceShowBoundingBoxes === true) {
                 let boundingInfo = sourceMesh.getBoundingInfo();
 
                 if (boundingInfo) {
@@ -2997,12 +2999,15 @@
                 }
             }
 
-            if (mesh && mesh.subMeshes) {
+            if (
+                mesh !== undefined && mesh !== null
+                && mesh.subMeshes !== undefined && mesh.subMeshes !== null && mesh.subMeshes.length > 0
+            ) {
                 // Submeshes Octrees
                 var len: number;
                 var subMeshes: SubMesh[];
 
-                if (mesh._submeshesOctree && mesh.useOctreeForRenderingSelection) {
+                if (mesh.useOctreeForRenderingSelection === true && mesh._submeshesOctree !== undefined && mesh._submeshesOctree !== null) {
                     var intersections = mesh._submeshesOctree.select(this._frustumPlanes);
 
                     len = intersections.length;
@@ -3012,9 +3017,8 @@
                     len = subMeshes.length;
                 }
 
-                for (var subIndex = 0; subIndex < len; subIndex++) {
-                    var subMesh = subMeshes[subIndex];
-
+                for (var subIndex = 0, subMesh; subIndex < len; subIndex++) {
+                    subMesh = subMeshes[subIndex];
                     this._evaluateSubMesh(subMesh, mesh);
                 }
             }
@@ -3286,10 +3290,13 @@
                 return;
             }
 
-            this._activeParticles.fetchNewFrame();
-            this._totalVertices.fetchNewFrame();
-            this._activeIndices.fetchNewFrame();
-            this._activeBones.fetchNewFrame();
+            if (BABYLON.PerfCounter.Enabled === true) {
+                this._activeParticles.fetchNewFrame();
+                this._totalVertices.fetchNewFrame();
+                this._activeIndices.fetchNewFrame();
+                this._activeBones.fetchNewFrame();
+            }
+
             this._meshesForIntersections.reset();
             this.resetCachedMaterial();
 
