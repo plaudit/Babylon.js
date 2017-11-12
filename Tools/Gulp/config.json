@@ -30,6 +30,7 @@
             "instrumentation"
         ],
         "clearfield": [
+            "picking",
             "standardMaterial",
             "multiMaterial",
             "freeCamera",
