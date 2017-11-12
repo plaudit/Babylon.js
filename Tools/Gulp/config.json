@@ -25,11 +25,11 @@
             "morphTargets",
             "serialization",
             "backgroundMaterial",
-            "environmentHelper"
+            "environmentHelper",
+            "debug",
+            "instrumentation"
         ],
         "clearfield": [
-            "debug",
-            "instrumentation",
             "standardMaterial",
             "multiMaterial",
             "freeCamera",

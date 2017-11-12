@@ -943,7 +943,7 @@
 
         // Properties
         public get debugLayer(): DebugLayer {
-            if (!this._debugLayer) {
+            if (this._debugLayer === undefined && DebugLayer !== undefined) {
                 this._debugLayer = new DebugLayer(this);
             }
             return this._debugLayer;
