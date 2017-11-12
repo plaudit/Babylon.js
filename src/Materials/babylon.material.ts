@@ -747,7 +747,7 @@
 
             multiMaterial.id = parsedMultiMaterial.id;
 
-            if (Tags) {
+            if (Tags !== undefined) {
                 Tags.AddTagsTo(multiMaterial, parsedMultiMaterial.tags);
             }
 

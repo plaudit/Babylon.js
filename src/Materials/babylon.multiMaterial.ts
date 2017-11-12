@@ -105,7 +105,9 @@
 
             serializationObject.name = this.name;
             serializationObject.id = this.id;
-            serializationObject.tags = Tags.GetTags(this);
+            if (Tags !== undefined) {
+                serializationObject.tags = Tags.GetTags(this);
+            }
 
             serializationObject.materials = [];
 

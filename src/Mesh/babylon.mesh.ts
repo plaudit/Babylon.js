@@ -178,7 +178,7 @@
                 Tools.DeepCopy(source, this, ["name", "material", "skeleton", "instances", "parent", "uniqueId", "source"], ["_poseMatrix", "_source"]);
 
                 // Tags
-                if (Tags.HasTags(source)) {
+                if (Tags !== undefined && Tags.HasTags(source)) {
                     Tags.AddTagsTo(this, Tags.GetTags(source, true));
                 }
 
@@ -2030,7 +2030,7 @@
             serializationObject.id = this.id;
             serializationObject.type = this.getClassName();
 
-            if (Tags && Tags.HasTags(this)) {
+            if (Tags !== undefined && Tags.HasTags(this)) {
                 serializationObject.tags = Tags.GetTags(this);
             }
 
@@ -2235,7 +2235,7 @@
             }
             mesh.id = parsedMesh.id;
 
-            if (Tags) {
+            if (Tags !== undefined) {
                 Tags.AddTagsTo(mesh, parsedMesh.tags);
             }
 
@@ -2438,7 +2438,7 @@
                     var parsedInstance = parsedMesh.instances[index];
                     var instance = mesh.createInstance(parsedInstance.name);
 
-                    if (Tags) {
+                    if (Tags !== undefined) {
                         Tags.AddTagsTo(instance, parsedInstance.tags);
                     }
 

@@ -8,9 +8,42 @@
         "outputDirectory": "../../dist/preview release",
         "outputCustomConfigurationsDirectory": "../../dist/preview release/customConfigurations",
         "srcOutputDirectory": "../../src/",
-        "currentConfig": "all"
+        "currentConfig": "clearfield"
     },
     "buildConfigurations": {
+        "clearfield-temp-probably-not": [
+            "layer",
+            "optimizations",
+            "vr",
+            "virtualJoystick",
+            "userData",
+            "offline",
+            "defaultRenderingPipeline",
+            "geometryBufferRenderer",
+            "bones",
+            "hdr",
+            "morphTargets",
+            "serialization",
+            "backgroundMaterial",
+            "environmentHelper"
+        ],
+        "clearfield": [
+            "debug",
+            "instrumentation",
+            "standardMaterial",
+            "multiMaterial",
+            "freeCamera",
+            "universalCamera",
+            "hemisphericLight",
+            "pointLight",
+            "animations",
+            "additionalMeshes",
+            "meshBuilder",
+            "loader",
+            "octrees"
+        ],
+
+        
         "all": [
             "standardMaterial",
             "pbrMaterial",
@@ -670,6 +703,15 @@
             ],
             "dependUpon": [
                 "core"
+            ]
+        },
+        "universalCamera": {
+            "files": [
+                "../../src/Cameras/babylon.universalCamera.js"
+            ],
+            "dependUpon": [
+                "touchCamera",
+                "gamepad"
             ]
         },
         "additionalCameras": {

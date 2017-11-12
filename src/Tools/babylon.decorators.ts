@@ -6,7 +6,7 @@
         var destination = creationFunction();
 
         // Tags
-        if (Tags) {
+        if (Tags !== undefined) {
             Tags.AddTagsTo(destination, (<any>source).tags);
         }
 
@@ -186,7 +186,7 @@
             }
 
             // Tags
-            if (Tags) {
+            if (Tags !== undefined) {
                 serializationObject.tags = Tags.GetTags(entity);
             }
 
@@ -246,7 +246,7 @@
             }
 
             // Tags
-            if (Tags) {
+            if (Tags !== undefined) {
                 Tags.AddTagsTo(destination, source.tags);
             }
 
