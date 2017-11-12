@@ -2919,12 +2919,16 @@
             for (var meshIndex = 0; meshIndex < len; meshIndex++) {
                 mesh = meshes[meshIndex];
 
-                if (mesh.isBlocked === true || mesh.isReady() === false || mesh.isEnabled() === false) {
+                if (mesh.isBlocked === true) {
                     continue;
                 }
 
                 if (BABYLON.PerfCounter.Enabled === true) {
                     this._totalVertices.addCount(mesh.getTotalVertices(), false);
+                }
+
+                if (mesh.isReady() === false || mesh.isEnabled() === false) {
+                    continue;
                 }
 
                 mesh.computeWorldMatrix();
