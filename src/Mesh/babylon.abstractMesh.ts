@@ -2138,7 +2138,7 @@
         public setParent(mesh: Nullable<AbstractMesh>): AbstractMesh {
             var parent = (<AbstractMesh>mesh);
 
-            if (mesh == null) {
+            if (mesh === null) {
 
                 var rotation = Tmp.Quaternion[0];
                 var position = Tmp.Vector3[0];
