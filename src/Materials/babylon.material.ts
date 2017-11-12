@@ -296,8 +296,8 @@
         }
 
         @serialize()
-        private _needDepthPrePass = false;
-        public set needDepthPrePass(value : boolean) {
+        private _needDepthPrePass: boolean = false;
+        public set needDepthPrePass(value: boolean) {
             if (this._needDepthPrePass === value) {
                 return;
             }

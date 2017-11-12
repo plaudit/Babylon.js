@@ -324,27 +324,27 @@
                 material = subMesh.getMaterial();
             }
 
-            if (material === null && material == undefined) {
+            if (material === null || material === undefined) {
                 return;
             }
 
             if (material.needAlphaBlendingForMesh(mesh)) { // Transparent
                 this._transparentSubMeshes.push(subMesh);
             } else if (material.needAlphaTesting()) { // Alpha test
-                if (material.needDepthPrePass) {
+                if (material.needDepthPrePass === true) {
                     this._depthOnlySubMeshes.push(subMesh);
                 }
                 
                 this._alphaTestSubMeshes.push(subMesh);
             } else {
-                if (material.needDepthPrePass) {
+                if (material.needDepthPrePass === true) {
                     this._depthOnlySubMeshes.push(subMesh);
                 }
                 
                 this._opaqueSubMeshes.push(subMesh); // Opaque
             }
 
-            if (mesh._edgesRenderer) {
+            if (mesh._edgesRenderer !== null && mesh._edgesRenderer !== undefined) {
                 this._edgesRenderers.push(mesh._edgesRenderer);
             }
         }

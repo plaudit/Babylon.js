@@ -847,6 +847,7 @@
         private _pendingData = new Array();
         private _isDisposed = false;
 
+        public dispatchAllSubMeshesOfActiveMeshes:boolean = false;
         private _activeMeshes = new SmartArray<AbstractMesh>(256);
         private _processedMaterials = new SmartArray<Material>(256);
         private _renderTargets = new SmartArrayNoDuplicate<RenderTargetTexture>(256);
@@ -2827,7 +2828,7 @@
         }
 
         private _evaluateSubMesh(subMesh: SubMesh, mesh: AbstractMesh): void {
-            if (mesh.alwaysSelectAsActiveMesh === true || mesh.subMeshes.length === 1 || subMesh.isInFrustum(this._frustumPlanes)) {
+            if (this.dispatchAllSubMeshesOfActiveMeshes === true || mesh.alwaysSelectAsActiveMesh === true || mesh.subMeshes.length === 1 || subMesh.isInFrustum(this._frustumPlanes)) {
                 
                 if (mesh.showSubMeshesBoundingBox === true) {
                     const boundingInfo = subMesh.getBoundingInfo();
