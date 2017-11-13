@@ -371,7 +371,10 @@
 
         public static BindLights(scene: Scene, mesh: AbstractMesh, effect: Effect, defines: any, maxSimultaneousLights = 4, usePhysicalLightFalloff = false) {
             var lightIndex = 0;
-            for (var light of mesh._lightSources) {
+            var light;
+            for (var i = 0, len = mesh._lightSources.length; i < len; i++) {
+                light = mesh._lightSources[i];
+                
                 let scaledIntensity = light.getScaledIntensity();
                 light._uniformBuffer.bindToEffect(effect, "Light" + lightIndex);
 
